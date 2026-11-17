@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Olinda Keliya</title>
+<style>
+:root{--bg:#faf5ee;--fg:#2b1d14;--board:#8a5630;--pit:#4a2a15;--hi:#f2b84b;--muted:#7d6a5a;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1c1511;--fg:#f3e8dc;--board:#5a361f;--pit:#2a170b;--muted:#b09a88;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1c1511;--fg:#f3e8dc;--board:#5a361f;--pit:#2a170b;--muted:#b09a88;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px);--pat:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cg transform='translate(40 40)' fill='none' stroke='%23b8793e' stroke-width='1.2' opacity='.3'%3E%3Cellipse cy='-13' rx='5' ry='12'/%3E%3Cellipse cy='-13' rx='5' ry='12' transform='rotate(45)'/%3E%3Cellipse cy='-13' rx='5' ry='12' transform='rotate(90)'/%3E%3Cellipse cy='-13' rx='5' ry='12' transform='rotate(135)'/%3E%3Cellipse cy='-13' rx='5' ry='12' transform='rotate(180)'/%3E%3Cellipse cy='-13' rx='5' ry='12' transform='rotate(225)'/%3E%3Cellipse cy='-13' rx='5' ry='12' transform='rotate(270)'/%3E%3Cellipse cy='-13' rx='5' ry='12' transform='rotate(315)'/%3E%3Ccircle r='3' fill='%23b8793e'/%3E%3C/g%3E%3Cg fill='%23b8793e' opacity='.3'%3E%3Ccircle r='3'/%3E%3Ccircle cx='80' r='3'/%3E%3Ccircle cy='80' r='3'/%3E%3Ccircle cx='80' cy='80' r='3'/%3E%3C/g%3E%3C/svg%3E");--fr:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='14'%3E%3Cpath d='M0 7 Q12 -1 24 7 T48 7' fill='none' stroke='%23c98b3f' stroke-width='1.6'/%3E%3Ccircle cx='24' cy='7' r='2' fill='%23c98b3f'/%3E%3C/svg%3E")}
+body{margin:0;background:var(--bg);background-image:var(--pat);color:var(--fg);font-family:system-ui,-apple-system,"Segoe UI","Noto Sans Sinhala",sans-serif;display:flex;flex-direction:column;align-items:center;padding:16px 10px}
+body[data-fest="1"]{--bg:#fff1d6;--fg:#5b1a0d;--board:#7b1e12;--pit:#3a0c06;--hi:#ffd24a;--muted:#8a4b2a;background-image:linear-gradient(#ffd24a66,transparent 160px),var(--pat)}
+body[data-fest="1"] .board{box-shadow:inset 0 0 0 3px #f2b84b,0 6px 14px #0004}
+#moon{width:64px;height:64px}
+.frieze{height:14px;width:100%;max-width:640px;margin:6px 0;background:var(--fr) repeat-x center}
+h1{margin:4px 0;font-size:1.5rem}
+.sub{color:var(--muted);font-size:.9rem;margin:0 0 8px;text-align:center}
+.bar{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:6px 0}
+button,select{font:inherit;padding:7px 12px;border-radius:8px;border:1px solid var(--muted);background:var(--bg);color:var(--fg)}
+button:disabled{opacity:.5}
+.score{display:flex;gap:18px;font-weight:600;margin:6px 0}
+.board{outline:2px solid #e0b36a88;outline-offset:-5px;background-color:var(--board);background-image:repeating-linear-gradient(92deg,#0000 0 7px,#0002 7px 8px);padding:10px;border-radius:16px;width:100%;max-width:640px;box-sizing:border-box;box-shadow:inset 0 0 0 3px #0003,0 6px 14px #0004}
+.row{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin:6px 0}
+.pit{aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 50% 35%,#000b,var(--pit) 75%);border:3px solid transparent;position:relative;padding:0;display:flex;align-items:center;justify-content:center;cursor:default;color:#fff;box-shadow:inset 0 3px 7px #000a}
+.pit:disabled{opacity:1}
+.pit:not(:disabled){cursor:pointer;border-color:#d9a05a}
+.pit.hl{border-color:var(--hi);box-shadow:0 0 10px var(--hi);animation:pop .18s}
+.pit.capf{border-color:#fff;box-shadow:0 0 16px 5px #ffd36b;transform:scale(1.08)}
+.pit.last{outline:2px dashed var(--hi);outline-offset:2px}
+.pit.lcap{outline:2px solid #fff9;outline-offset:2px}
+.pit.hint{animation:pulse 1s infinite}
+@keyframes pop{50%{transform:scale(1.13)}}
+@keyframes pulse{50%{box-shadow:0 0 14px 4px #7dff9a}}
+.d{position:absolute;inset:14%;display:flex;flex-wrap:wrap;gap:2px;align-content:center;justify-content:center}
+.d i,.hand i{width:20%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 50% 82%,#111 0 17%,#0000 19%),radial-gradient(circle at 35% 30%,#e8503f,#a51a12);box-shadow:0 1px 2px #000a}
+.n{position:absolute;right:4px;bottom:2px;font-size:.75rem;opacity:.9}
+.status{min-height:1.5em;margin:10px 0 2px;font-weight:600;text-align:center}
+.hand,.toast,.stats{min-height:1.4em;color:var(--muted);font-size:.9rem;display:flex;align-items:center;gap:5px;flex-wrap:wrap;justify-content:center;margin-bottom:4px}
+.hand i{width:12px;height:12px}
+details{max-width:640px;margin-top:8px;color:var(--muted);font-size:.9rem}
+</style></head><body>
+<div id="moon"></div>
+<h1 data-i="title"></h1>
+<p class="sub" data-i="sub"></p>
+<div class="frieze"></div>
+<div class="bar"><select id="mode"><option value="bot" data-i="m_bot"></option><option value="two" data-i="m_two"></option></select>
+<select id="lv"><option value="easy" data-i="l_e"></option><option value="medium" data-i="l_m"></option><option value="hard" data-i="l_h" selected></option></select>
+<button id="lang">සිං / EN</button><button id="mute" title="Sound">🔊</button><button id="fest" title="Avurudu">🎉</button></div>
+<div class="score"><span><span id="l0"></span>: <b id="s0">0</b></span><span><span id="l1"></span>: <b id="s1">0</b></span></div>
+<div class="board"><div class="row" id="top"></div><div class="row" id="bot"></div></div>
+<div class="frieze"></div>
+<div class="status" id="st"></div>
+<div class="hand" id="hand"></div>
+<div class="bar"><button id="new" data-i="nw"></button><button id="undo" data-i="un"></button><button id="hint" data-i="hi"></button><button id="share" data-i="sh"></button></div>
+<div class="toast" id="toast"></div>
+<div class="stats" id="stats"></div>
+<details><summary data-i="rules"></summary><p data-i="rt"></p></details>
+<script>
+const N=14,own=i=>i<7?0:1,$=id=>document.getElementById(id);
+const T={en:{title:"Olinda Keliya",sub:"Traditional Sri Lankan seed game · you play the bottom row",you:"You",bot:"Bot",p1:"Player 1",p2:"Player 2",nw:"New game",un:"Undo",hi:"Hint",sh:"Share",m_bot:"vs Bot",m_two:"2 players",l_e:"Easy",l_m:"Medium",l_h:"Hard",yt:"Your turn: choose a hole on your side.",bt:"Bot’s turn…",p1t:"Player 1’s turn (bottom)",p2t:"Player 2’s turn (top)",sow:"Sowing…",hy:"Seeds in your hand: ",hb:"Seeds in bot’s hand: ",h1:"Player 1’s hand: ",h2:"Player 2’s hand: ",w:"You win",l:"Bot wins",d:"Draw",p1w:"Player 1 wins",p2w:"Player 2 wins",sw:"Wins",sl:"Losses",sd:"Draws",sb:"Best streak",rules:"Rules used here",ok:"Copied!",no:"Couldn’t share",rt:"14 holes, 7 per player, 4 seeds in each (56 seeds). Pick one of your holes, lift all its seeds and sow them one by one counter-clockwise. If the last seed lands in a hole that already had seeds, lift that hole and keep sowing. When the last seed lands in an empty hole, capture the seeds in the next hole (if any) and your turn ends. When a player has no seeds on their side at their turn, the game ends and each player keeps the seeds left on their own side. Most seeds wins. Traditional rules differ by region; this is the version chosen for this site."},
+si:{title:"ඔලිඳ කෙළිය",sub:"සාම්ප්‍රදායික ශ්‍රී ලාංකික බීජ ක්‍රීඩාව · ඔබ පහළ පේළිය ක්‍රීඩා කරයි",you:"ඔබ",bot:"පරිගණකය",p1:"ක්‍රීඩක 1",p2:"ක්‍රීඩක 2",nw:"නව ක්‍රීඩාව",un:"පසුපසට",hi:"ඉඟිය",sh:"බෙදාගන්න",m_bot:"පරිගණකයට එරෙහිව",m_two:"ක්‍රීඩකයන් 2ක්",l_e:"පහසු",l_m:"මධ්‍යම",l_h:"අමාරු",yt:"ඔබේ වාරය: ඔබේ පැත්තේ වළක් තෝරන්න.",bt:"පරිගණකයේ වාරය…",p1t:"ක්‍රීඩක 1ගේ වාරය (පහළ)",p2t:"ක්‍රීඩක 2ගේ වාරය (ඉහළ)",sow:"දමමින්…",hy:"ඔබේ අතේ බීජ: ",hb:"පරිගණකයේ අතේ බීජ: ",h1:"ක්‍රීඩක 1ගේ අතේ: ",h2:"ක්‍රීඩක 2ගේ අතේ: ",w:"ඔබ දිනුවා",l:"පරිගණකය දිනුවා",d:"සමසම",p1w:"ක්‍රීඩක 1 දිනුවා",p2w:"ක්‍රීඩක 2 දිනුවා",sw:"ජය",sl:"පරාජය",sd:"සමසම",sb:"හොඳම ජය පෙළ",rules:"මෙහි භාවිත නීති",ok:"පිටපත් කළා!",no:"බෙදාගත නොහැකි විය",rt:"වළවල් 14ක් (එක් ක්‍රීඩකයෙකුට 7), සෑම වළකම බීජ 4ක් (මුළු බීජ 56). ඔබේ වළක් තෝරා, බීජ සියල්ල ගෙන වාමාවර්තව එකින් එක දමන්න. අවසාන බීජය බීජ ඇති වළකට වැටුණොත් ඒ වළේ බීජ ගෙන දිගටම දමන්න. අවසාන බීජය හිස් වළකට වැටුණොත් ඊළඟ වළේ බීජ අල්ලා ගන්න; වාරය අවසන්. ක්‍රීඩකයෙකුගේ පැත්තේ බීජ නැති විට ක්‍රීඩාව අවසන් වේ; ඉතිරි බීජ ඒ ඒ පැත්තේ හිමිකරුට. වැඩිම බීජ ඇති අය දිනයි."}};
+let lang="en",st,view=null,busy=false,tmr,hist=[],hintPit=-1,muted=false,stats={w:0,l:0,d:0,s:0,b:0},ac;
+const tr=k=>T[lang][k];
+function sget(k,def){try{const v=localStorage.getItem(k);return v===null?def:v}catch(e){return def}}
+function sset(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+function tone(f,d,ty,v){if(muted)return;try{ac=ac||new(window.AudioContext||window.webkitAudioContext)();const o=ac.createOscillator(),g=ac.createGain(),t=ac.currentTime;o.type=ty||"sine";o.frequency.value=f;o.connect(g);g.connect(ac.destination);g.gain.setValueAtTime(v||.08,t);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.start(t);o.stop(t+d)}catch(e){}}
+function sfx(k){if(k==0)tone(220,.12,"triangle",.12);else if(k==1)tone(520+Math.random()*90,.06,"square",.04);else{tone(880,.15,"sine",.1);setTimeout(()=>tone(1320,.22,"sine",.08),90)}}
+function fresh(){return{b:Array(N).fill(4),s:[0,0],turn:0,over:false,last:null}}
+function clone(x){return{b:x.b.slice(),s:x.s.slice(),turn:x.turn,over:x.over,last:x.last}}
+function legal(x){const r=[];for(let i=0;i<N;i++)if(own(i)==x.turn&&x.b[i]>0)r.push(i);return r}
+function fin(x){let a=x.s[0],c=x.s[1];for(let i=0;i<N;i++)own(i)?c+=x.b[i]:a+=x.b[i];return[a,c]}
+function play(x,pit,fr){
+  const b=x.b,p=x.turn,snap=(h,k)=>fr&&fr.push({b:b.slice(),s:x.s.slice(),hl:h,hand:hand,p:p,k:k});
+  let pos=pit,hand=b[pit],g=0;b[pit]=0;x.last={pit:pit,cap:-1};snap(pit,0);
+  for(;;){
+    while(hand>0){pos=(pos+1)%N;b[pos]++;hand--;snap(pos,1)}
+    if(b[pos]>1&&++g<300){hand=b[pos];b[pos]=0;snap(pos,0);continue}
+    if(b[pos]==1){const nx=(pos+1)%N;if(b[nx]>0){x.s[p]+=b[nx];b[nx]=0;x.last.cap=nx;snap(nx,2)}}
+    break;
+  }
+  x.turn=1-p;
+  if(!legal(x).length)x.over=true;
+}
+function ev(x){if(x.over){const f=fin(x);return(f[1]-f[0])*10}return x.s[1]-x.s[0]}
+function mm(x,d,a,b){
+  if(d==0||x.over)return ev(x);
+  let best=x.turn==1?-1e9:1e9;
+  for(const m of legal(x)){
+    const c=clone(x);play(c,m);const v=mm(c,d-1,a,b);
+    if(x.turn==1){best=Math.max(best,v);a=Math.max(a,v)}else{best=Math.min(best,v);b=Math.min(b,v)}
+    if(b<=a)break;
+  }
+  return best;
+}
+function best(x,depth){
+  let bv=null,bs=[];
+  for(const m of legal(x)){const c=clone(x);play(c,m);const v=mm(c,depth-1,-1e9,1e9),sc=x.turn==1?v:-v;if(bv===null||sc>bv){bv=sc;bs=[m]}else if(sc==bv)bs.push(m)}
+  return bs[Math.random()*bs.length|0];
+}
+function botMove(){const l=$("lv").value;if(l=="easy"){const ms=legal(st);return ms[Math.random()*ms.length|0]}return best(st,l=="medium"?2:5)}
+const mode=()=>$("mode").value;
+function build(){
+  const mk=(id,i)=>{const e=document.createElement("button");e.className="pit";e.id="p"+i;e.innerHTML='<span class="d"></span><span class="n"></span>';e.onclick=()=>click(i);$(id).appendChild(e)};
+  for(let i=13;i>=7;i--)mk("top",i);
+  for(let i=0;i<7;i++)mk("bot",i);
+}
+function statsTxt(){$("stats").textContent=tr("sw")+" "+stats.w+" · "+tr("sl")+" "+stats.l+" · "+tr("sd")+" "+stats.d+" · "+tr("sb")+" "+stats.b}
+function draw(){
+  const v=view||st,two=mode()=="two",L=st.last;
+  for(let i=0;i<N;i++){
+    const e=$("p"+i);
+    e.querySelector(".d").innerHTML="<i></i>".repeat(Math.min(v.b[i],16));
+    e.querySelector(".n").textContent=v.b[i];
+    e.classList.toggle("hl",!!view&&view.hl==i&&view.k!=2);
+    e.classList.toggle("capf",!!view&&view.hl==i&&view.k==2);
+    e.classList.toggle("last",!view&&!!L&&L.pit==i);
+    e.classList.toggle("lcap",!view&&!!L&&L.cap==i);
+    e.classList.toggle("hint",!view&&hintPit==i);
+    e.disabled=busy||st.over||st.b[i]==0||own(i)!=st.turn||(st.turn==1&&!two);
+  }
+  $("l0").textContent=two?tr("p1"):tr("you");$("l1").textContent=two?tr("p2"):tr("bot");
+  $("s0").textContent=v.s[0];$("s1").textContent=v.s[1];
+  $("hand").innerHTML=view?(view.p==0?(two?tr("h1"):tr("hy")):(two?tr("h2"):tr("hb")))+view.hand+" "+"<i></i>".repeat(Math.min(view.hand,20)):"";
+  let t;
+  if(st.over&&!view){const f=fin(st),sc=" "+f[0]+"–"+f[1]+".";t=f[0]==f[1]?tr("d")+sc:f[0]>f[1]?(two?tr("p1w"):tr("w"))+sc:(two?tr("p2w"):tr("l"))+sc}
+  else if(view)t=tr("sow");
+  else t=st.turn==0?(two?tr("p1t"):tr("yt")):(two?tr("p2t"):tr("bt"));
+  $("st").textContent=t;
+  $("undo").disabled=busy||!hist.length||st.over;
+  $("hint").disabled=busy||st.over||(!two&&st.turn==1);
+  statsTxt();
+}
+function endGame(){
+  const f=fin(st);
+  if(mode()=="bot"){
+    if(f[0]>f[1]){stats.w++;stats.s++;stats.b=Math.max(stats.b,stats.s)}else if(f[0]<f[1]){stats.l++;stats.s=0}else stats.d++;
+    sset("olinda-stats",JSON.stringify(stats));
+  }
+  if(f[0]>f[1]||mode()=="two"){[523,659,784,1047].forEach((n,i)=>setTimeout(()=>tone(n,.25,"sine",.1),i*140))}
+  else tone(180,.4,"triangle",.1);
+  draw();
+}
+function doMove(m,human){
+  hintPit=-1;if(human)hist.push(clone(st));
+  busy=true;const fr=[];play(st,m,fr);let k=0;
+  (function step(){
+    view=fr[k++];sfx(view.k);draw();
+    if(k<fr.length)tmr=setTimeout(step,k<2?350:200);
+    else{view=null;busy=false;draw();if(st.over)endGame();else next()}
+  })();
+}
+function next(){if(st.over||st.turn!=1||mode()!="bot")return;busy=true;draw();tmr=setTimeout(()=>doMove(botMove(),false),600)}
+function click(i){if(busy||st.over||own(i)!=st.turn||st.b[i]==0||(st.turn==1&&mode()!="two"))return;doMove(i,true)}
+function reset(){clearTimeout(tmr);st=fresh();view=null;busy=false;hist=[];hintPit=-1;draw()}
+function undo(){if(busy||!hist.length||st.over)return;st=hist.pop();hintPit=-1;view=null;draw()}
+function toast(k){$("toast").textContent=tr(k);setTimeout(()=>$("toast").textContent="",2500)}
+async function share(){
+  const f=fin(st),txt=(st.over?"Olinda Keliya "+f[0]+"–"+f[1]+"! ":"Try Olinda Keliya! ")+location.href;
+  try{if(navigator.share){await navigator.share({text:txt});return}await navigator.clipboard.writeText(txt);toast("ok")}catch(e){toast("no")}
+}
+function i18n(){
+  document.documentElement.lang=lang=="si"?"si":"en";
+  document.querySelectorAll("[data-i]").forEach(e=>e.textContent=tr(e.dataset.i));
+  document.title=tr("title");
+}
+$("new").onclick=reset;$("undo").onclick=undo;$("share").onclick=share;
+$("hint").onclick=()=>{if(busy||st.over||(mode()=="bot"&&st.turn==1))return;hintPit=best(st,5);draw()};
+$("mode").onchange=reset;$("lv").onchange=reset;
+$("lang").onclick=()=>{lang=lang=="en"?"si":"en";sset("olinda-lang",lang);i18n();draw()};
+$("mute").onclick=()=>{muted=!muted;sset("olinda-mute",muted?"1":"0");$("mute").textContent=muted?"🔇":"🔊"};
+$("fest").onclick=()=>{const on=document.body.dataset.fest!="1";document.body.dataset.fest=on?"1":"0";sset("olinda-fest",on?"1":"0")};
+try{const s=JSON.parse(sget("olinda-stats","null"));if(s)stats=s}catch(e){}
+lang=sget("olinda-lang","en")=="si"?"si":"en";muted=sget("olinda-mute","0")=="1";$("mute").textContent=muted?"🔇":"🔊";
+document.body.dataset.fest=sget("olinda-fest","0");
+(function(){let s='<svg viewBox="0 0 100 100" width="64" height="64" fill="none" stroke="#c98b3f" stroke-width="1.6"><circle cx="50" cy="50" r="47"/><circle cx="50" cy="50" r="31"/><circle cx="50" cy="50" r="12" fill="#c98b3f"/>';
+for(let i=0;i<16;i++)s+='<ellipse cx="50" cy="11" rx="4" ry="7" transform="rotate('+i*22.5+' 50 50)"/>';
+for(let i=0;i<8;i++)s+='<ellipse cx="50" cy="29" rx="3.5" ry="8" transform="rotate('+(i*45+22.5)+' 50 50)"/>';
+$("moon").innerHTML=s+'</svg>'})();
+build();i18n();reset();
+</script></body></html>
